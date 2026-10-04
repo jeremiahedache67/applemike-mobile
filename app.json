@@ -39,6 +39,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "owner": "apple-mike-gadgets-store",
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "5aef6339-9c7d-47ae-8ea1-56f44e41c073"
+      }
     }
   }
 }
