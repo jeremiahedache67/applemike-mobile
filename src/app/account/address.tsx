@@ -1,6 +1,7 @@
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, Switch, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, Switch, View } from 'react-native';
+import { Text } from '@/components/text';
 
 import { StatePicker } from '@/components/state-picker';
 import { Banner, Button, Field } from '@/components/ui';

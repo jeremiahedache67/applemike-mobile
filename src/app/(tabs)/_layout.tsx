@@ -14,7 +14,7 @@ export default function TabsLayout() {
       screenOptions={{
         tabBarActiveTintColor: colors.brand,
         tabBarInactiveTintColor: colors.ink500,
-        tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
+        tabBarLabelStyle: { fontSize: 11, fontFamily: 'Inter_600SemiBold' },
         headerTitleStyle: { fontFamily: fonts.display, fontSize: 20 },
         headerShadowVisible: false,
         tabBarBadgeStyle: { backgroundColor: colors.brand, fontSize: 11 },

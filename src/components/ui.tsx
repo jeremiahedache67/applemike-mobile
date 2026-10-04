@@ -1,14 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import {
-  ActivityIndicator,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  type TextInputProps,
-  type ViewStyle,
-} from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, TextInput, View, type TextInputProps, type ViewStyle } from 'react-native';
+import { Text } from '@/components/text';
 
 import { colors, fonts, radius } from '@/theme';
 
@@ -186,6 +178,7 @@ export const s = StyleSheet.create({
     borderColor: colors.ink200,
     paddingHorizontal: 14,
     fontSize: 16, // 16px avoids iOS zoom and keeps text readable
+    fontFamily: 'Inter_400Regular',
     color: colors.ink950,
     backgroundColor: colors.white,
   },

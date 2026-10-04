@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, Text } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { Text } from '@/components/text';
 
 import { Banner, Button, Field, s } from '@/components/ui';
 import { useAuth } from '@/providers/auth';

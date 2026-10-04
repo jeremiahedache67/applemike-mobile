@@ -1,9 +1,9 @@
-import { SpaceGrotesk_600SemiBold, SpaceGrotesk_700Bold, useFonts } from '@expo-google-fonts/space-grotesk';
 import { DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 
+import { FontsProvider, useFontsReady } from '@/components/text';
 import { AddressProvider } from '@/providers/addresses';
 import { AuthProvider, useAuth } from '@/providers/auth';
 import { CartProvider } from '@/providers/cart';
@@ -18,36 +18,42 @@ const theme = {
   colors: { ...DefaultTheme.colors, primary: colors.brand, background: colors.white, card: colors.white, text: colors.ink950, border: colors.ink100 },
 };
 
+// Expo Router requires the root layout to always render its navigator (never return null),
+// otherwise screens can mount outside these providers. The splash screen stays up instead
+// until fonts and the saved sign-in are ready (see SplashController).
 export default function RootLayout() {
-  const [fontsLoaded, fontError] = useFonts({ SpaceGrotesk_600SemiBold, SpaceGrotesk_700Bold });
-  if (!fontsLoaded && !fontError) return null;
-
   return (
     <ThemeProvider value={theme}>
+      <FontsProvider>
       <AuthProvider>
         <CatalogProvider>
           <CartProvider>
             <FavouritesProvider>
               <AddressProvider>
                 <StatusBar style="dark" />
+                <SplashController />
                 <AppStack />
               </AddressProvider>
             </FavouritesProvider>
           </CartProvider>
         </CatalogProvider>
       </AuthProvider>
+      </FontsProvider>
     </ThemeProvider>
   );
 }
 
-function AppStack() {
+function SplashController() {
+  const fontsReady = useFontsReady();
   const { ready } = useAuth();
-  // Keep the splash screen up until the saved session has been restored (no login flash).
+  // Hide the splash only once fonts are loaded and the saved session is restored (no flash of the login state).
   useEffect(() => {
-    if (ready) SplashScreen.hideAsync();
-  }, [ready]);
-  if (!ready) return null;
+    if (fontsReady && ready) void SplashScreen.hideAsync();
+  }, [fontsReady, ready]);
+  return null;
+}
 
+function AppStack() {
   return (
     <Stack
       screenOptions={{

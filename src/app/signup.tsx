@@ -1,6 +1,7 @@
 import { Link, router } from 'expo-router';
 import { useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+import { Text } from '@/components/text';
 
 import { LogoMark } from '@/components/logo';
 import { Banner, Button, Field, s } from '@/components/ui';

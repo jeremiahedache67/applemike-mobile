@@ -1,7 +1,8 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { Alert, FlatList, Linking, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Alert, FlatList, Linking, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Text } from '@/components/text';
 
 import { ProductCard } from '@/components/product-card';
 import { ProductImage } from '@/components/product-image';

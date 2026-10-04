@@ -1,7 +1,8 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, Linking, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, Linking, ScrollView, View } from 'react-native';
+import { Text } from '@/components/text';
 
 import { StatusPill } from '@/components/status-pill';
 import { Banner, Button, EmptyState, s } from '@/components/ui';
