@@ -39,3 +39,12 @@ Docs: https://docs.expo.dev/eas/index.md
 - If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `app.json` and config plugins.
 - Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `npx expo run:ios|android` locally, or `eas build --profile development`.
 - Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md
+
+## Apple Mike project rules
+
+- This app is a second client for the **same backend** as the website (`../applemike-store`): one Supabase project, one set of accounts. Read `../applemike-store/AGENTS.md` ("Apple Mike — project rules").
+- Never add a mobile-only backend, tables or account system. Read/write the shared tables (`cart_items`, `wishlist_items`, `addresses`, `profiles`, `orders`) through `src/lib/supabase.ts`; RLS enforces ownership.
+- Checkout must go through the website's `POST /api/checkout` (`src/lib/checkout.ts`). Never compute order totals client-side as the source of truth, and never auto-retry order creation.
+- Only the publishable Supabase key belongs in this app (`EXPO_PUBLIC_*`). Auth sessions live in SecureStore (`src/lib/secure-storage.ts`).
+- Keep the design in step with the website: colours/fonts in `src/theme.ts` mirror `applemike-store/src/app/globals.css`.
+- Use JS `Tabs` from `expo-router` (NativeTabs is not supported in Expo Go, which we use for device testing).
