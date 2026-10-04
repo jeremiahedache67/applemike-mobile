@@ -1,5 +1,6 @@
 import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
+import { Platform } from 'react-native';
 
 import { supabase } from './supabase';
 
@@ -11,6 +12,23 @@ import { supabase } from './supabase';
 // The redirect URL must be allowed in Supabase → Authentication → URL Configuration:
 //   exp://**        (development in Expo Go)
 //   applemike://**  (installed builds)
+
+// Android: always name a real browser. Without this, Android may hand the sign-in page to another
+// app that claims https links but refuses to open them (seen with OPay), which crashes the app.
+const KNOWN_BROWSERS = ['com.android.chrome', 'com.sec.android.app.sbrowser', 'com.brave.browser', 'org.mozilla.firefox', 'com.microsoft.emmx', 'com.opera.browser'];
+
+async function pickAndroidBrowser(): Promise<string | undefined> {
+  if (Platform.OS !== 'android') return undefined;
+  try {
+    const { preferredBrowserPackage, defaultBrowserPackage, servicePackages, browserPackages } = await WebBrowser.getCustomTabsSupportingBrowsersAsync();
+    const capable = servicePackages.length ? servicePackages : browserPackages;
+    if (preferredBrowserPackage) return preferredBrowserPackage;
+    if (defaultBrowserPackage && capable.includes(defaultBrowserPackage)) return defaultBrowserPackage;
+    return KNOWN_BROWSERS.find((p) => capable.includes(p)) ?? capable[0];
+  } catch {
+    return undefined;
+  }
+}
 
 export const googleRedirectUrl = () => Linking.createURL('auth-callback');
 
@@ -24,7 +42,13 @@ export async function signInWithGoogle(): Promise<GoogleResult> {
   });
   if (error || !data.url) return { ok: false, cancelled: false, error: "We couldn't reach Google. Check your connection and try again." };
 
-  const result = await WebBrowser.openAuthSessionAsync(data.url, redirectTo);
+  const browserPackage = await pickAndroidBrowser();
+  let result: WebBrowser.WebBrowserAuthSessionResult;
+  try {
+    result = await WebBrowser.openAuthSessionAsync(data.url, redirectTo, browserPackage ? { browserPackage } : undefined);
+  } catch {
+    return { ok: false, cancelled: false, error: "We couldn't open Google sign-in. Please make sure Chrome is installed, or sign in with your email and password." };
+  }
   if (result.type !== 'success') return { ok: false, cancelled: true, error: null };
   return completeGoogleSignIn(result.url);
 }
