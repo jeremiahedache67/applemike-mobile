@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Link, type Href } from 'expo-router';
+import { router, type Href } from 'expo-router';
 import { Alert, Linking, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Text } from '@/components/text';
 
@@ -19,7 +19,7 @@ export default function AccountScreen() {
     return (
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <SignInPrompt title="Your Apple Mike account" body="Use the same account as the website to see your orders, saved addresses, cart and favourites on every device." />
-        <Help />
+        <Help inset />
       </ScrollView>
     );
   }
@@ -71,22 +71,21 @@ export default function AccountScreen() {
 
 function Row({ icon, label, detail, href, last }: { icon: IconName; label: string; detail?: string; href: Href; last?: boolean }) {
   return (
-    <Link href={href} asChild>
-      <Pressable accessibilityRole="button" style={({ pressed }) => [st.row, !last && st.rowBorder, pressed && { backgroundColor: colors.ink50 }]}>
+    <Pressable onPress={() => router.push(href)} accessibilityRole="button" style={({ pressed }) => [st.row, !last && st.rowBorder, pressed && { backgroundColor: colors.ink50 }]}>
         <Ionicons name={icon} size={22} color={colors.brand} />
         <View style={{ flex: 1, minWidth: 0 }}>
           <Text style={{ fontWeight: '600', fontSize: 15, color: colors.ink950 }}>{label}</Text>
           {detail ? <Text style={{ color: colors.ink500, fontSize: 13 }} numberOfLines={1}>{detail}</Text> : null}
         </View>
         <Ionicons name="chevron-forward" size={18} color={colors.ink400} />
-      </Pressable>
-    </Link>
+    </Pressable>
   );
 }
 
-function Help() {
+// inset: add page padding when the parent screen has none (signed-out view).
+function Help({ inset }: { inset?: boolean }) {
   return (
-    <View style={{ paddingHorizontal: PAGE, gap: 10 }}>
+    <View style={{ paddingHorizontal: inset ? PAGE : 0, gap: 10 }}>
       <Text style={[s.label, { color: colors.ink500 }]}>NEED HELP?</Text>
       <View style={st.group}>
         <Pressable style={[st.row, st.rowBorder]} onPress={() => Linking.openURL(whatsappLink('Hi Apple Mike, I need help.'))} accessibilityRole="button">

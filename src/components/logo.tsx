@@ -31,8 +31,8 @@ export function Logo() {
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 9 }} accessibilityRole="header" accessibilityLabel="Apple Mike, Sure Plug">
       <LogoMark size={34} />
       <View>
-        <Text style={{ fontFamily: fonts.display, fontSize: 18, color: colors.ink950, lineHeight: 20 }}>apple mike</Text>
-        <Text style={{ fontFamily: fonts.displaySemi, fontSize: 9, letterSpacing: 2.4, color: colors.brand }}>SURE PLUG</Text>
+        <Text style={{ fontFamily: fonts.display, fontSize: 18, color: colors.ink950, lineHeight: 22, paddingRight: 4 }}>apple mike</Text>
+        <Text style={{ fontFamily: fonts.displaySemi, fontSize: 9, letterSpacing: 2.4, color: colors.brand, paddingRight: 4 }}>SURE PLUG</Text>
       </View>
     </View>
   );

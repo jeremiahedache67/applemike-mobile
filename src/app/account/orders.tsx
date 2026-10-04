@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Link, router, useFocusEffect } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { ActivityIndicator, FlatList, Pressable, RefreshControl, View } from 'react-native';
 import { Text } from '@/components/text';
@@ -56,8 +56,7 @@ export default function OrdersScreen() {
       }
       ListHeaderComponent={error ? <Banner onRetry={load}>{error}</Banner> : null}
       renderItem={({ item: o }) => (
-        <Link href={{ pathname: '/account/order/[id]', params: { id: o.id } }} asChild>
-          <Pressable accessibilityRole="button" style={({ pressed }) => [{ padding: 16, borderRadius: 18, borderWidth: 1, borderColor: colors.ink100, gap: 8 }, pressed && { backgroundColor: colors.ink50 }]}>
+          <Pressable onPress={() => router.push({ pathname: '/account/order/[id]', params: { id: o.id } })} accessibilityRole="button" style={({ pressed }) => [{ padding: 16, borderRadius: 18, borderWidth: 1, borderColor: colors.ink100, gap: 8 }, pressed && { backgroundColor: colors.ink50 }]}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <Text style={{ fontWeight: '700', fontSize: 15 }}>{o.orderNumber}</Text>
               <Text style={{ fontFamily: fonts.display, fontSize: 17 }}>{naira(o.total)}</Text>
@@ -72,7 +71,6 @@ export default function OrdersScreen() {
               <Ionicons name="chevron-forward" size={18} color={colors.ink400} />
             </View>
           </Pressable>
-        </Link>
       )}
       ListEmptyComponent={
         error ? null : (

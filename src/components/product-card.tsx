@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Link } from 'expo-router';
+import { router } from 'expo-router';
 import { Alert, Pressable, StyleSheet, View } from 'react-native';
 import { Text } from '@/components/text';
 
@@ -17,8 +17,7 @@ export function ProductCard({ product }: { product: Product }) {
   const chips = product.specs.filter((sp) => ['Chip', 'Processor', 'Memory', 'Storage', 'Battery health'].includes(sp.label)).slice(0, 2);
 
   return (
-    <Link href={{ pathname: '/product/[slug]', params: { slug: product.slug } }} asChild>
-      <Pressable style={({ pressed }) => [{ flex: 1 }, pressed && { opacity: 0.85 }]} accessibilityLabel={`${product.name}, ${naira(priceOf(product))}${sold ? ', sold' : ''}`}>
+      <Pressable onPress={() => router.push({ pathname: '/product/[slug]', params: { slug: product.slug } })} style={({ pressed }) => [{ flex: 1 }, pressed && { opacity: 0.85 }]} accessibilityLabel={`${product.name}, ${naira(priceOf(product))}${sold ? ', sold' : ''}`}>
         <View>
           <ProductImage src={product.images[0]} name={product.name} dimmed={sold} style={st.image} />
           <View style={st.badges}>
@@ -54,7 +53,6 @@ export function ProductCard({ product }: { product: Product }) {
           {naira(priceOf(product))}
         </Text>
       </Pressable>
-    </Link>
   );
 }
 
