@@ -1,8 +1,10 @@
-import { DefaultTheme, Stack, ThemeProvider } from 'expo-router';
+import { DefaultTheme, Stack, ThemeProvider, type ErrorBoundaryProps } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
+import { Pressable, Text, View } from 'react-native';
 
+import { installCrashReporter, showLastCrash } from '@/lib/crash-report';
 import { FontsProvider, useFontsReady } from '@/components/text';
 import { AddressProvider } from '@/providers/addresses';
 import { AuthProvider, useAuth } from '@/providers/auth';
@@ -12,6 +14,7 @@ import { FavouritesProvider } from '@/providers/favourites';
 import { colors, fonts } from '@/theme';
 
 SplashScreen.preventAutoHideAsync();
+installCrashReporter();
 
 const theme = {
   ...DefaultTheme,
@@ -48,7 +51,10 @@ function SplashController() {
   const { ready } = useAuth();
   // Hide the splash only once fonts are loaded and the saved session is restored (no flash of the login state).
   useEffect(() => {
-    if (fontsReady && ready) void SplashScreen.hideAsync();
+    if (fontsReady && ready) {
+      void SplashScreen.hideAsync();
+      void showLastCrash();
+    }
   }, [fontsReady, ready]);
   return null;
 }
@@ -77,5 +83,25 @@ function AppStack() {
       <Stack.Screen name="account/orders" options={{ title: 'Your orders' }} />
       <Stack.Screen name="account/order/[id]" options={{ title: 'Order' }} />
     </Stack>
+  );
+}
+
+// Shown instead of closing the app if a screen fails to render. Uses plain React Native views
+// because the providers above may be what failed.
+export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
+  useEffect(() => {
+    void SplashScreen.hideAsync();
+  }, []);
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24, gap: 14, backgroundColor: colors.white }}>
+      <Text style={{ fontSize: 20, fontWeight: '700', color: colors.ink950, textAlign: 'center' }}>Something went wrong</Text>
+      <Text style={{ color: colors.ink500, textAlign: 'center' }}>Please try again. If this keeps happening, send a screenshot of this screen to Apple Mike.</Text>
+      <Text style={{ color: colors.ink400, fontSize: 12, textAlign: 'center' }} selectable>
+        {error.name}: {error.message}
+      </Text>
+      <Pressable onPress={retry} accessibilityRole="button" style={{ backgroundColor: colors.brand, borderRadius: 999, paddingHorizontal: 28, height: 50, justifyContent: 'center' }}>
+        <Text style={{ color: colors.white, fontWeight: '700', fontSize: 16 }}>Try again</Text>
+      </Pressable>
+    </View>
   );
 }
