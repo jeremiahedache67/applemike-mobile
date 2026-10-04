@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { Text } from '@/components/text';
 
+import { GoogleButton, OrDivider } from '@/components/google-button';
 import { LogoMark } from '@/components/logo';
 import { Banner, Button, Field, s } from '@/components/ui';
 import { useAuth } from '@/providers/auth';
@@ -36,18 +37,20 @@ export default function LoginScreen() {
         {error && <Banner>{error}</Banner>}
         <Field label="Email" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" autoComplete="email" textContentType="emailAddress" returnKeyType="next" />
         <Field label="Password" value={password} onChangeText={setPassword} secureTextEntry autoComplete="current-password" textContentType="password" returnKeyType="go" onSubmitEditing={submit} />
-        <Link href="/forgot-password" style={{ color: colors.brand, fontWeight: '700', alignSelf: 'flex-end' }}>
-          Forgot password?
+        <Link href="/forgot-password" asChild>
+          <Text style={{ color: colors.brand, fontWeight: '700', alignSelf: 'flex-end' }}>Forgot password?</Text>
         </Link>
         <Button title="Sign in" onPress={submit} loading={busy} />
+        <OrDivider />
+        <GoogleButton onError={setError} />
         <Text style={{ textAlign: 'center', color: colors.ink600, marginTop: 6 }}>
           New to Apple Mike?{' '}
-          <Link href="/signup" replace style={{ color: colors.brand, fontWeight: '700' }}>
-            Create an account
+          <Link href="/signup" replace asChild>
+            <Text style={{ color: colors.brand, fontWeight: '700' }}>Create an account</Text>
           </Link>
         </Text>
         <Text style={{ textAlign: 'center', color: colors.ink500, fontSize: 12, marginTop: 6 }}>
-          Signed up with Google on the website? Tap “Forgot password?” to set a password for the app.
+          Signed up with Google on the website? Use “Continue with Google” — it&apos;s the same account.
         </Text>
       </ScrollView>
     </KeyboardAvoidingView>

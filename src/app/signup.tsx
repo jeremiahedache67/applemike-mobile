@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { Text } from '@/components/text';
 
+import { GoogleButton, OrDivider } from '@/components/google-button';
 import { LogoMark } from '@/components/logo';
 import { Banner, Button, Field, s } from '@/components/ui';
 import { useAuth } from '@/providers/auth';
@@ -53,10 +54,12 @@ export default function SignupScreen() {
             <Field label="Password" hint="At least 8 characters" value={password} onChangeText={setPassword} secureTextEntry autoComplete="new-password" textContentType="newPassword" />
             <Field label="Confirm password" value={confirm} onChangeText={setConfirm} secureTextEntry autoComplete="new-password" textContentType="newPassword" onSubmitEditing={submit} />
             <Button title="Create account" onPress={submit} loading={busy} />
+            <OrDivider />
+            <GoogleButton onError={setError} />
             <Text style={{ textAlign: 'center', color: colors.ink600, marginTop: 6 }}>
               Already have an account?{' '}
-              <Link href="/login" replace style={{ color: colors.brand, fontWeight: '700' }}>
-                Sign in
+              <Link href="/login" replace asChild>
+                <Text style={{ color: colors.brand, fontWeight: '700' }}>Sign in</Text>
               </Link>
             </Text>
           </>

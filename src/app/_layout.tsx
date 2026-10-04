@@ -64,6 +64,7 @@ function AppStack() {
         contentStyle: { backgroundColor: colors.white },
       }}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="auth-callback" options={{ headerShown: false }} />
       <Stack.Screen name="product/[slug]" options={{ title: '' }} />
       <Stack.Screen name="checkout" options={{ title: 'Checkout' }} />
       <Stack.Screen name="order-success" options={{ title: 'Order placed', headerBackVisible: false, gestureEnabled: false }} />
