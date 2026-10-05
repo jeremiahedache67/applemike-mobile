@@ -48,3 +48,5 @@ Docs: https://docs.expo.dev/eas/index.md
 - Only the publishable Supabase key belongs in this app (`EXPO_PUBLIC_*`). Auth sessions live in SecureStore (`src/lib/secure-storage.ts`).
 - Keep the design in step with the website: colours/fonts in `src/theme.ts` mirror `applemike-store/src/app/globals.css`.
 - Use JS `Tabs` from `expo-router` (NativeTabs is not supported in Expo Go, which we use for device testing).
+- Google sign-in on Android must pass an explicit `browserPackage` to `openAuthSessionAsync` (`src/lib/google-auth.ts`). Some apps (e.g. OPay) claim https links without exporting the activity, which crashes the app if Android picks them.
+- Installable Android test builds: `eas build -p android --profile preview` (APK). Publishable env values live in `eas.json` because `.env.local` is not uploaded to EAS.
