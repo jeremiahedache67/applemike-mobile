@@ -61,3 +61,13 @@ src/lib/            Supabase client, secure storage, catalogue, checkout API, or
 src/providers/      app state: auth, catalogue, cart, favourites, addresses
 src/theme.ts        brand colours/fonts (mirrors the website)
 ```
+
+## Installable Android app (APK)
+
+1. `eas build -p android --profile preview` (needs `eas login` once; builds in the cloud, ~15 min).
+2. Open the build link on an Android phone, download the `.apk` and install it.
+   Play Protect may warn because the app isn't from the Play Store: **More details → Install anyway**.
+3. Google sign-in needs `applemike://**` in Supabase → Authentication → URL Configuration → Redirect URLs.
+
+Verified on a Samsung S10 (Android 10): Google + email sign-in, Website↔App sync of cart, favourites
+and addresses, checkout via `/api/checkout`, sign-out/sign-in.
